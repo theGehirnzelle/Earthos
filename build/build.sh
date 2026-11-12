@@ -13,7 +13,7 @@ SKRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 VORLAGE="$SKRIPT_DIR/config"
 SPLASH="$SKRIPT_DIR/splash.svg"   # Bild im Boot-Menü (640x480)
 
-[ "$(id -u)" -eq 0 ] || { echo "Bitte mit sudo starten."; exit 1; }
+[ "$(id -u)" -eq 0 ] || { echo "Bist du dumm du musst die kacke mit sudo starten?!"; exit 1; }
 
 # --- Standard-Anpassungen anlegen, falls es noch keinen config-Ordner gibt ---
 if [ ! -d "$VORLAGE" ]; then
