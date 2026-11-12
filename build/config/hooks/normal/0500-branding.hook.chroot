@@ -1,0 +1,16 @@
+#!/bin/sh
+# Läuft beim Bauen IM neuen System (chroot) und gibt ihm einen eigenen Namen.
+set -e
+
+NAME="@@DISTRO_NAME@@"   # wird von bauen.sh ersetzt
+
+# os-release ist die Datei, aus der Programme den Namen des Systems lesen.
+# ID bleibt "debian", damit Programme und Installationsskripte dein System
+# weiterhin als Debian erkennen und richtig funktionieren.
+rm -f /etc/os-release
+sed -e "s/^PRETTY_NAME=.*/PRETTY_NAME=\"$NAME (basiert auf Debian 13)\"/" \
+    -e "s/^NAME=.*/NAME=\"$NAME\"/" \
+    /usr/lib/os-release > /etc/os-release
+
+# Begrüßung auf der Text-Konsole
+printf '%s \\n \\l\n\n' "$NAME" > /etc/issue

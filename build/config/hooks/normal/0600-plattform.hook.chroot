@@ -1,0 +1,11 @@
+#!/bin/sh
+# Läuft beim Bauen IM neuen System und bereitet es für Programme vor,
+# die nicht vorinstalliert sind, aber problemlos laufen sollen.
+set -e
+
+# 32-Bit-Unterstützung, damit Steam und Windows-Spiele (Wine/Proton) laufen
+dpkg --add-architecture i386
+
+# Flathub als App-Quelle: Discord, Spotify, VS Code, Steam usw. im App-Store
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo \
+  || echo "WARNUNG: Flathub konnte nicht eingetragen werden"

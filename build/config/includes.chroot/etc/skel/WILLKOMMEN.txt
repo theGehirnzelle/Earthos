@@ -1,0 +1,4 @@
+Willkommen in deiner eigenen Distro!
+
+Diese Datei kommt aus config/includes.chroot/etc/skel/ neben bauen.sh.
+Alles, was du dort ablegst, landet 1:1 im fertigen System.

@@ -1,0 +1,56 @@
+# Desktop: GNOME, nur der Kern (ohne LibreOffice, Evolution, Rhythmbox usw.).
+# Das komplette GNOME mit allen Apps wäre: task-gnome-desktop
+# Für Xfce stattdessen: task-xfce-desktop   | KDE Plasma: task-kde-desktop
+task-desktop
+gnome-core
+
+# Deutsch als Sprache und Tastatur
+task-german
+task-german-desktop
+locales
+console-setup
+keyboard-configuration
+
+# Grafischer Installer, damit man vom Live-System auf die Festplatte installieren kann
+calamares-settings-debian
+
+# Hardware
+firmware-linux
+# Laptops mit zwei Grafikkarten: "Mit dedizierter Grafikkarte starten" per Rechtsklick
+switcheroo-control
+# Sagt, welcher NVIDIA-Treiber zur Karte passt (wird vom EarthOS-Treiber-Skript benutzt)
+nvidia-detect
+
+# Online-Konten (Microsoft, Google, Nextcloud) stecken in GNOME selbst
+# (Einstellungen -> Online-Konten); das hier sorgt für Cloud-Dateien und Kalender
+gvfs-backends
+gnome-calendar
+
+# Programme nachinstallieren: App-Store mit Flatpak (Flathub wird per Hook eingetragen)
+flatpak
+gnome-software
+gnome-software-plugin-flatpak
+
+# Snap als zweite App-Quelle (Snaps erscheinen ebenfalls im App-Store)
+snapd
+gnome-software-plugin-snap
+
+# Damit Videos, Musik und Spiele ohne Probleme laufen
+gstreamer1.0-plugins-good
+gstreamer1.0-plugins-bad
+gstreamer1.0-plugins-ugly
+gstreamer1.0-libav
+mesa-vulkan-drivers
+
+# Programmieren: Grundwerkzeuge (Compiler, make, git)
+build-essential
+git
+curl
+
+# Browser
+firefox-esr
+firefox-esr-l10n-de
+
+# Kleine Helfer
+sudo
+htop

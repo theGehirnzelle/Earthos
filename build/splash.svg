@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <defs>
+    <linearGradient id="himmel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1a2e"/>
+      <stop offset="1" stop-color="#03070d"/>
+    </linearGradient>
+    <radialGradient id="meer" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#3a8fd9"/>
+      <stop offset="1" stop-color="#0c3460"/>
+    </radialGradient>
+    <clipPath id="kugel"><circle cx="190" cy="125" r="62"/></clipPath>
+  </defs>
+
+  <!-- Hintergrund mit ein paar Sternen -->
+  <rect width="640" height="480" fill="url(#himmel)"/>
+  <g fill="#ffffff" opacity="0.6">
+    <circle cx="40" cy="40" r="1"/><circle cx="120" cy="210" r="0.8"/>
+    <circle cx="300" cy="30" r="1.2"/><circle cx="420" cy="70" r="0.8"/>
+    <circle cx="560" cy="35" r="1"/><circle cx="600" cy="150" r="0.8"/>
+    <circle cx="500" cy="220" r="1"/><circle cx="70" cy="140" r="0.8"/>
+    <circle cx="610" cy="420" r="1"/><circle cx="30" cy="400" r="0.8"/>
+  </g>
+
+  <!-- Erdkugel -->
+  <circle cx="190" cy="125" r="68" fill="#5cc8ff" opacity="0.15"/>
+  <circle cx="190" cy="125" r="62" fill="url(#meer)"/>
+  <g clip-path="url(#kugel)" fill="#4caf50">
+    <path d="M150 80 q20 -15 40 -5 q10 10 -5 22 q-15 6 -10 20 q4 14 -14 18 q-18 2 -22 -16 q-6 -22 11 -39z"/>
+    <path d="M205 120 q18 -6 30 8 q10 14 -4 30 q-12 14 -26 4 q-10 -10 -6 -24 q2 -14 6 -18z"/>
+    <path d="M215 70 q14 -4 22 6 q4 8 -8 10 q-12 0 -14 -16z"/>
+  </g>
+
+  <!-- Name -->
+  <text x="280" y="128" font-family="DejaVu Sans, sans-serif" font-size="54" font-weight="bold" fill="#ffffff">EarthOS</text>
+  <text x="283" y="160" font-family="DejaVu Sans, sans-serif" font-size="17" fill="#8fbfe6">basiert auf Debian 13</text>
+</svg>
