@@ -8,7 +8,7 @@ Schlank ausgeliefert, aber bereit für alles: App-Store mit Flathub und Snap,
 
 | Ordner | Inhalt |
 |---|---|
-| [`build/`](build/) | Alles, um das EarthOS-ISO zu bauen (`bauen.sh`, Paketliste, Hooks, Boot-Bild) |
+| [`build/`](build/) | Alles, um das EarthOS-ISO zu bauen (`build.sh`, Paketliste, Hooks, Boot-Bild) |
 | [`apps/treiber/`](apps/treiber/) | EarthOS Treiber: erkennt NVIDIA-Grafikkarten und installiert den passenden Treiber |
 
 ## ISO bauen
@@ -18,7 +18,7 @@ Auf einem **Debian-13-System** (z. B. einer VM):
 ```bash
 git clone https://github.com/theGehirnzelle/Earthos.git
 cd Earthos/build
-sudo ./bauen.sh
+sudo ./build.sh
 ```
 
 Das fertige ISO liegt danach in `/root/distro-build/`. Mehr dazu in [`build/README.md`](build/README.md).

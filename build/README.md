@@ -16,7 +16,7 @@ Debian (`sudo apt update && sudo apt upgrade`).
 3. Bauen:
    ```bash
    cd Earthos/build
-   sudo ./bauen.sh
+   sudo ./build.sh
    ```
    Dauert je nach Internet 20 bis 60 Minuten. Das ISO liegt danach in `/root/distro-build/`,
    die Build-Nummer steht am Ende der Ausgabe.
@@ -33,7 +33,7 @@ Debian (`sudo apt update && sudo apt upgrade`).
 | `config/hooks/normal/*.hook.chroot` | Shell-Skripte, die beim Bauen **im** neuen System laufen (hier: Name in `/etc/os-release`). |
 | `config/includes.chroot/` | Dateien, die 1:1 ins System kopiert werden. `etc/skel/` = Vorlage für jeden neuen Benutzer. |
 | `splash.svg` | Das Bild im Boot-Menü (640x480). Mit Inkscape bearbeiten oder durch ein eigenes SVG ersetzen. |
-| `bauen.sh` | Ruft `lb config` (Grundeinstellungen) und `lb build` auf. |
+| `build.sh` | Ruft `lb config` (Grundeinstellungen) und `lb build` auf. |
 
 Nach dem ersten Build lohnt ein Blick in `~/distro-build/config/`: Dort siehst du alle
 Einstellungen, die `lb config` erzeugt hat.
@@ -47,4 +47,4 @@ Einstellungen, die `lb config` erzeugt hat.
 
 ## Wenn etwas schiefgeht
 - Fehler steht am Ende von `~/distro-build/build.log`.
-- Komplett neu anfangen: `cd ~/distro-build && sudo lb clean --purge`, dann `bauen.sh` erneut.
+- Komplett neu anfangen: `cd ~/distro-build && sudo lb clean --purge`, dann `build.sh` erneut.

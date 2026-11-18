@@ -1,12 +1,21 @@
 # Desktop: GNOME, nur der Kern (ohne LibreOffice, Evolution, Rhythmbox usw.).
-# Das komplette GNOME mit allen Apps wäre: task-gnome-desktop
-# Für Xfce stattdessen: task-xfce-desktop   | KDE Plasma: task-kde-desktop
-task-desktop
+# Achtung: Die "task-..."-Pakete (task-desktop, task-gnome-desktop, task-german-desktop)
+# ziehen über ihre Empfehlungen das komplette GNOME samt LibreOffice nach. Deshalb
+# stehen hier stattdessen die einzelnen Bausteine.
 gnome-core
+
+# Grundlage, die sonst task-desktop mitbringt
+xorg
+desktop-base
+cups
+avahi-daemon
+bluez
+fonts-noto-core
+fonts-noto-color-emoji
 
 # Deutsch als Sprache und Tastatur
 task-german
-task-german-desktop
+hunspell-de-de
 locales
 console-setup
 keyboard-configuration
@@ -18,8 +27,6 @@ calamares-settings-debian
 firmware-linux
 # Laptops mit zwei Grafikkarten: "Mit dedizierter Grafikkarte starten" per Rechtsklick
 switcheroo-control
-# Sagt, welcher NVIDIA-Treiber zur Karte passt (wird vom EarthOS-Treiber-Skript benutzt)
-nvidia-detect
 
 # Online-Konten (Microsoft, Google, Nextcloud) stecken in GNOME selbst
 # (Einstellungen -> Online-Konten); das hier sorgt für Cloud-Dateien und Kalender

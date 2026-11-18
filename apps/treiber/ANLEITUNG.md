@@ -66,26 +66,66 @@ Zeig das Ergebnis im Fenster an:
 Tipp: `Adw.StatusPage` (hast du schon), `Gtk.Button` mit der CSS-Klasse `suggested-action`
 und `pill`, und `Adw.PreferencesGroup` mit `Adw.ActionRow` für eine schöne Geräteliste.
 
-## Schritt 4: Den richtigen Treiber herausfinden
+## Schritt 4: Den richtigen Treiber herausfinden (für jede Distro)
 
-Debian hat dafür das Werkzeug `nvidia-detect` (Paket `nvidia-detect`). Es sagt dir, welches
-Paket zu der Karte passt (meist `nvidia-driver`, bei alten Karten eine Legacy-Version).
+`nvidia-detect` gibt es nur bei Debian. Damit dein Skript auch auf Fedora und Arch
+funktioniert, bestimmst du die **Generation** der Karte selbst. Das ist gar nicht schwer.
 
-**Aufgabe:** Ruf es mit `subprocess.run(..., capture_output=True, text=True)` auf und lies
-den empfohlenen Paketnamen aus der Ausgabe.
-
-## Schritt 5: Installieren, ohne dass die App als root läuft
-
-Grafische Apps laufen **nie** als root. Für den einen Befehl, der root braucht, nimmst du
-`pkexec`. Das zeigt den normalen Passwort-Dialog von GNOME:
+**4a: Den Chip-Namen nachschlagen.** Jede Distro hat die Datei `pci.ids`, eine Liste aller
+PCI-Geräte. Je nach Distro liegt sie unter `/usr/share/hwdata/pci.ids` oder
+`/usr/share/misc/pci.ids`. Prüf beide und nimm die, die es gibt. Aufbau:
 
 ```
-pkexec apt-get install -y nvidia-driver firmware-misc-nonfree linux-headers-amd64
+10de  NVIDIA Corporation              <- Hersteller (keine Einrückung)
+	1f08  TU106 [GeForce RTX 2060]    <- Gerät (ein Tab davor)
+		...                           <- Untergeräte (zwei Tabs, kannst du ignorieren)
 ```
 
-**Wichtig:** Die Installation dauert Minuten. Läuft sie direkt im Code des Knopfs, friert
-die App ein. Nutze `Gio.Subprocess` (läuft im Hintergrund), zeig solange einen
-`Gtk.Spinner` und die Ausgabe in einer `Gtk.TextView`.
+Die Geräte-ID steht in `/sys/bus/pci/devices/<adresse>/device` (z. B. `0x1f08`, ohne `0x`
+suchen). Die ersten zwei Buchstaben des Chips (`TU`) verraten die Generation.
+
+**4b: Generation → Treiberart.** Stand Ende 2026:
+
+| Chip beginnt mit | Generation | Beispiele | Treiberart |
+|---|---|---|---|
+| `TU`, `GA`, `GH`, `AD`, `GB` | Turing bis Blackwell | GTX 16, RTX 20/30/40/50 | **offen** (aktueller NVIDIA-Treiber mit offenen Kernel-Modulen) |
+| `GM`, `GP`, `GV` | Maxwell, Pascal, Volta | GTX 750/900/10 | **proprietär 580** (letzte Reihe, die diese Karten unterstützt) |
+| `GK` und älter | Kepler und älter | GTX 600/700 | **keiner**, bei `nouveau` bleiben (alte Treiber laufen auf neuen Kerneln nicht mehr) |
+
+**4c: Die Distro erkennen.** In `/etc/os-release` stehen `ID` (z. B. `debian`, `fedora`, `arch`)
+und `ID_LIKE` (Verwandte, z. B. `ubuntu` hat `ID_LIKE=debian`). EarthOS hat `ID=debian`.
+
+**4d: Ein „Rezept“ pro Distro.** Leg die Unterschiede als Daten ab, nicht als viele `if`s.
+Dann ist eine neue Distro später nur ein neuer Eintrag:
+
+```python
+REZEPTE = {
+    "debian": {
+        "befehl": ["apt-get", "install", "-y"],
+        "offen": ["nvidia-open-kernel-dkms", "nvidia-driver", "firmware-misc-nonfree", "linux-headers-amd64"],
+        "proprietaer": ["nvidia-kernel-dkms", "nvidia-driver", "firmware-misc-nonfree", "linux-headers-amd64"],
+    },
+    "fedora": {"befehl": ["dnf", "install", "-y"], ...},
+    "arch":   {"befehl": ["pacman", "-S", "--noconfirm"], ...},
+}
+```
+
+Die Paketnamen sind mein Wissensstand und **vor dem Einbau auf der jeweiligen Distro zu
+prüfen** (z. B. mit `apt-cache show`, `dnf info`, `pacman -Si`). Ein paar Besonderheiten:
+- **Debian/EarthOS:** braucht die Paketquellen `non-free` und `non-free-firmware` (in EarthOS schon an).
+- **Fedora:** Die Treiber kommen aus **RPM Fusion** (`akmod-nvidia`), das muss vorher eingerichtet sein.
+- **Arch:** offen ist `nvidia-open`. Die 580er-Reihe gibt es nur im AUR, das kann pacman nicht
+  direkt. Für Arch dann lieber nur einen Hinweis ausgeben.
+
+## Schritt 5: Installieren
+
+Im Hintergrund (bei der Installation oder beim ersten Start) läuft dein Skript bereits als
+root. Dort reicht `subprocess.run(rezept["befehl"] + pakete)`. Prüf den `returncode`, um zu
+erkennen, ob es geklappt hat.
+
+Später in der Einstellungs-App läuft dein Code **nicht** als root. Dann setzt du `pkexec`
+davor, das zeigt den normalen Passwort-Dialog von GNOME. Weil die Installation Minuten dauert,
+nimmst du dort `Gio.Subprocess`, damit die App nicht einfriert.
 
 ## Schritt 6: Secure Boot und Neustart
 
@@ -106,7 +146,7 @@ earthos-treiber/
 ```
 
 Bauen mit `dpkg-deb --build earthos-treiber`, die `.deb` in `config/packages.chroot/`
-neben `bauen.sh` legen, neu bauen. Fertig.
+neben `build.sh` legen, neu bauen. Fertig.
 
 ---
 
