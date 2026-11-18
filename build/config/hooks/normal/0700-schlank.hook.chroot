@@ -1,0 +1,13 @@
+#!/bin/sh
+# Läuft beim Bauen IM neuen System. Sicherheitsnetz, damit EarthOS schlank bleibt:
+# Falls ein Paket LibreOffice über seine Empfehlungen doch mitgezogen hat,
+# wird es hier wieder entfernt.
+set -e
+
+PAKETE="$(dpkg-query -W -f='${db:Status-Abbrev} ${Package}\n' 'libreoffice*' 2>/dev/null | awk '$1 == "ii" {print $2}')"
+
+if [ -n "$PAKETE" ]; then
+  echo "WARNUNG: LibreOffice wurde mitgezogen und wird entfernt:" $PAKETE
+  apt-get purge -y $PAKETE
+  apt-get autoremove --purge -y
+fi

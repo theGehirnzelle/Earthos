@@ -2,7 +2,7 @@
 # Läuft beim Bauen IM neuen System (chroot) und gibt ihm einen eigenen Namen.
 set -e
 
-NAME="@@DISTRO_NAME@@"   # wird von bauen.sh ersetzt
+NAME="@@DISTRO_NAME@@"   # wird von build.sh ersetzt
 
 # os-release ist die Datei, aus der Programme den Namen des Systems lesen.
 # ID bleibt "debian", damit Programme und Installationsskripte dein System
