@@ -49,10 +49,11 @@ class Treiberskript():
                 print("error: driver not found")
                 breakpoint()
         else:
-            return []
+            #return []
+            return class0x03 #delete this after the skript is ready
 
 
-    def findnvidiadriver(self):
+    def find_nvidia_driver(self):
         debian = False
         if Path("/usr/share/hwdata/pci.ids").exists():
             print("hwdata")
@@ -66,20 +67,20 @@ class Treiberskript():
             breakpoint()
             i = 0
             print(gpulist)
-        for eintrag in gpulist:
-            print(eintrag)
+        for gpu in gpulist:
+            print("gpu: ",gpu)
+            deviceid = Path("/sys/bus/pci/devices/" + gpu[2].strip() + "/device")
+            print("deviceid:", deviceid.read_text())
+            deviceid = deviceid.read_text()[2:]
+            print("deviceid:", deviceid)
 
-        print("end lol")
+    def find_distro(self):
+        os = Path("/etc/os-release")
+        print("os: ", os.read_text())
 
 
-
-
-
-    def installnvidiadriver(self):
+    def install_nvidia_driver(self):
         print("Methode noch in Arbeit")
-
-
-
 
 
 
@@ -87,4 +88,5 @@ if __name__ == "__main__":
     gpulist = Treiberskript.find_graphicscard(self=Treiberskript())
     print(len(gpulist))
     if len(gpulist) > 0:
-        Treiberskript.findnvidiadriver(gpulist)
+        Treiberskript.find_nvidia_driver(gpulist)
+    Treiberskript.find_distro(self=Treiberskript())
