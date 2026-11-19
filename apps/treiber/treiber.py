@@ -1,4 +1,3 @@
-from multiprocessing.managers import public_methods
 from pathlib import Path
 import subprocess
 
@@ -53,18 +52,25 @@ class Treiberskript():
             return []
 
 
-    def findnvidiadriver(gpu):
+    def findnvidiadriver(self):
         debian = False
-        if Path("usr/share/hwdata/pci.ids").exists():
+        if Path("/usr/share/hwdata/pci.ids").exists():
             print("hwdata")
             debian = True
-            pci = Path("usr/share/hwdata/pci.ids")
-        elif Path("usr/share/misc/pci.ids").exists():
+            pci = Path("/usr/share/hwdata/pci.ids")
+        elif Path("/usr/share/misc/pci.ids").exists():
             print("misc")
-            pci = Path("usr/share/misc/pci.ids")
+            pci = Path("/usr/share/misc/pci.ids")
         else:
             print("error: pci.ids path not found")
             breakpoint()
+            i = 0
+            print(gpulist)
+        for eintrag in gpulist:
+            print(eintrag)
+
+        print("end lol")
+
 
 
 
@@ -78,6 +84,7 @@ class Treiberskript():
 
 
 if __name__ == "__main__":
-    gpu = Treiberskript.find_graphicscard(self=Treiberskript())
-    print(len(gpu))
-    Treiberskript.findnvidiadriver(gpu)
+    gpulist = Treiberskript.find_graphicscard(self=Treiberskript())
+    print(len(gpulist))
+    if len(gpulist) > 0:
+        Treiberskript.findnvidiadriver(gpulist)
